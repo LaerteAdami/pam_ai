@@ -4,9 +4,9 @@ def simple_math(a,b):
     """
     return a + b
 
-class broken_calculator(small_err):
+class broken_calculator():
 
-    def __init__(self):
+    def __init__(self,small_err):
         
         self.small_error = small_err
 
