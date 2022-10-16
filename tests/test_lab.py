@@ -1,9 +1,11 @@
+# some_file.py
+import sys
+# caution: path[0] is reserved for script path (or '' in REPL)
+sys.path.insert(1, '/Users/laerte/pam_ai/pam_ai/src/lab')
+
 import exercise as ex
 
 import sys
- 
-# adding Folder_2 to the system path
-sys.path.insert(0, '/PAM_AI/src/lab')
 
 BR = ex.broken_calculator(3)
 

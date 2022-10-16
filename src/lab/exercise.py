@@ -5,7 +5,9 @@ def simple_math(a,b):
     return a + b
 
 class broken_calculator():
-
+    """
+    Class for compute wrong solutions
+    """
     def __init__(self,small_err):
         
         self.small_error = small_err
