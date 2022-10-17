@@ -1,12 +1,14 @@
 # some_file.py
-import sys
+#import sys
+#
+## caution: path[0] is reserved for script path (or '' in REPL)
+#sys.path.insert(1, "/Users/laerte/pam_ai/pam_ai/src/lab")
+#
+#import exercise as ex
 
-# caution: path[0] is reserved for script path (or '' in REPL)
-sys.path.insert(1, "/Users/laerte/pam_ai/pam_ai/src/lab")
+from src.lab import exercise as ex
 
-import exercise as ex
-
-import sys
+#import sys
 
 BR = ex.broken_calculator(3)
 
