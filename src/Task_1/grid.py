@@ -1,6 +1,6 @@
-class game_grid():
+class GameGrid():
     """
-    Defines the object game_grid which stores all the topological 
+    Defines the object game_grid which stores all the topological
     information of the grid and allows to create the grid with a random method
 
     """
