@@ -8,6 +8,7 @@ class GameGrid():
     def __init__(self, height = int, width = int):
         self.h = height
         self.w = width
+  
 
     def generate_grid(self):
 

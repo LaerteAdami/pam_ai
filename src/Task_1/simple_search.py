@@ -1,28 +1,71 @@
 class SimpleSearch():
 
-    def __init__(self, agent, grid):
+    def __init__(self, agent, random_grid):
         self.agent = agent
-        self.grid = grid
-        self.w = grid.grid.shape[1]
-        self.h = grid.grid.shape[0]
+        self.grid = random_grid.grid
+        self.w = random_grid.grid.shape[1]
+        self.h = random_grid.grid.shape[0]
+        self.path = ""
 
-    def evaluate_direction(self, grid):
+
+    def compute_time(self, i,j):
+        if (j > self.w or i > self.h):
+            return 0 
+        return self.grid[i,j]     
+
+    def compute_path(self):
         """
-        Questo metodo dovrebbe decidere in quale direzione muoversi
-        Valuata la cella a destra e sotto di quella selezionata (esclusi casi particolati ai bordi)
-        Per questa celle, valutiamo la somma della cella + le successive celle sotto e destra
-        La direzione scelte è quella che ha la minore somma
-        In questo modo possiamo valuatare con un po' più di profondità la direzione migliore per ogni step
+        This method should decide in which direction to move by evaluating the cell to the right 
+        and below the selected cell (excluding special cases at the edges)
+        For this cell, we evaluate the sum of the cell + the subsequent cells below and to the right
+        The direction chosen is the one with the smallest sum
+        In this way we can evaluate with a little more depth the best direction for each step
         """
 
+        h = self.h - 1
+        w = self.w - 1
+        path = []
+
+        timer = self.agent.timer + self.grid[0,0] # initialise the timer of the agent
+        i = self.agent.i # horizontal position of the agent at the start
+        j = self.agent.j # vertical position of the agent at the start
+
+        while not((i==h) and (j==w)):
         
+            if j == w: # only move down
+                move = "D"
+                timer += self.grid[i+1,j]
+                i+=1
+                path.append(move)
+                continue
+            
+            if i == h: # only move right
+                move = "R"
+                timer += self.grid[i,j+1]
+                j+=1
+                path.append(move)
+                continue
+            
+            # right cell
+            time_right = self.compute_time(i+1, j+1) + self.compute_time(i, j+1) + self.compute_time(i, j+2)
 
-        right_value = grid[self.agent.j][self.agent.i+1] #prendi il valore orizzontale
-        down_value = grid[self.agent.j+1][self.agent.i] #prendi il valore sotto
+            # down cell
+            time_down = self.compute_time(i+1, j) + self.compute_time(i+2, j)+ self.compute_time(i+1, j+1,)
 
-        if right_value < down_value:
-            return "r"
-        return "d"
+            if time_right < time_down:
+                move = "R"
+                timer += self.grid[i,j+1]
+                j+=1
+            else:
+                move = "D"
+                timer += self.grid[i+1,j]
+                i+=1
+
+            path.append(move)
+
+
+
+        self.agent.path = (" ".join(path))      
 
 
 
@@ -30,9 +73,6 @@ class SimpleSearch():
 
 
 
-    def __is_border(self, position):
-        if position[0] == 0 or position[0] == self.w:
-            return True
-        if position[1] == 0 or position[1] == self.h:
-            return True
-        return False    
+
+
+
