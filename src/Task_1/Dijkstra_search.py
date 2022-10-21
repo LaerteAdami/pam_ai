@@ -1,4 +1,4 @@
-class SimpleSearch():
+class DijkstraSearch():
 
     def __init__(self, agent, random_grid):
         self.agent = agent
