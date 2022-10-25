@@ -16,6 +16,8 @@ class DijkstraSearch():
         In this way we can evaluate with a little more depth the best direction for each step
         """
 
+        visited_set = ()
+
         h = self.h - 1
         w = self.w - 1
         path = []

@@ -24,6 +24,8 @@ class SimpleSearch():
         i = self.agent.i # horizontal position of the agent at the start
         j = self.agent.j # vertical position of the agent at the start
 
+        visited_set = set((0,0))
+
         while not((i==h) and (j==w)):
         
             if j == w: # only move down
@@ -31,6 +33,7 @@ class SimpleSearch():
                 self.agent.timer += self.grid[i+1,j]
                 i+=1
                 path.append(move)
+                visited_set.add((i,j)) 
                 continue
             
             if i == h: # only move right
@@ -38,6 +41,7 @@ class SimpleSearch():
                 self.agent.timer += self.grid[i,j+1]
                 j+=1
                 path.append(move)
+                visited_set.add((i,j)) 
                 continue
             
             # right cell
@@ -56,10 +60,12 @@ class SimpleSearch():
                 i+=1
 
             path.append(move)
+            visited_set.add((i,j)) 
 
 
 
-        self.agent.path = (" ".join(path))      
+        self.agent.path = (" ".join(path)) 
+        self.visited_set = visited_set     
 
     def compute_time(self, i,j):
         if (j > self.w - 1  or i > self.h -1 ):
