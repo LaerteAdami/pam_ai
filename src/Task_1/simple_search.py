@@ -24,7 +24,7 @@ class SimpleSearch():
         i = self.agent.i # horizontal position of the agent at the start
         j = self.agent.j # vertical position of the agent at the start
 
-        visited_set = set((0,0))
+        visited_set = {(0,0)}
 
         while not((i==h) and (j==w)):
         
