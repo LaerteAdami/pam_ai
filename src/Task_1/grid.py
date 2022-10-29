@@ -24,6 +24,7 @@ class GameGrid():
     def print_grid(self):
 
         import matplotlib.pyplot as plt
+        import matplotlib.ticker as ticker
         import numpy as np
 
         fig, ax = plt.subplots()
@@ -40,13 +41,24 @@ class GameGrid():
         ax.set_yticks(np.arange(self.grid.shape[0]+1))
         plt.xticks(color='w') 
         plt.yticks(color='w') 
-        ax.grid()     
-
-
-        import matplotlib.ticker as ticker
+        #ax.grid()     
 
         ax.xaxis.set_major_locator(ticker.NullLocator())
         ax.yaxis.set_major_locator(ticker.NullLocator())
         ax.grid()
 
-        # plt.matshow(Test,cmap=plt.cm.Reds,alpha = 0.5)    
+        return fig, ax
+         
+           
+    def print_path(self, visited_cells):
+
+        fig, ax = self.print_grid()
+
+        for i in range(self.grid.shape[0]-1,-1,-1):
+            for j in range(self.grid.shape[1]):
+                if (i,j) in visited_cells:
+                    c = self.grid[i][j]    
+                    ax.text(j+0.5, self.grid.shape[0]-i-0.5, str(c), va='center', ha='center',bbox=dict(boxstyle="round",
+                    ec=(1., 0.5, 0.5),
+                    fc=(1., 0.8, 0.8),
+                    ))

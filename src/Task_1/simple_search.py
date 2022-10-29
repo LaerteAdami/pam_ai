@@ -71,11 +71,3 @@ class SimpleSearch():
         if (j > self.w - 1  or i > self.h -1 ):
             return 0 
         return self.grid[i,j]     
-
-
-
-
-
-
-
-

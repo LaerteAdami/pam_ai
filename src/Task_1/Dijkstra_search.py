@@ -15,63 +15,60 @@ class DijkstraSearch():
         The direction chosen is the one with the smallest sum
         In this way we can evaluate with a little more depth the best direction for each step
         """
-
-        visited_set = ()
+        import numpy as np
 
         h = self.h - 1
         w = self.w - 1
-        path = []
 
-        self.agent.timer = self.grid[0,0] # initialise the timer of the agent
-        i = self.agent.i # horizontal position of the agent at the start
-        j = self.agent.j # vertical position of the agent at the start
+       # Initiate variables
 
-        while not((i==h) and (j==w)):
+        unvisited_set = set([ (i,j) for i in range(h+1) for j in range(w+1)])
+
+        distance_matrix = float("inf") * np.ones_like(self.grid)  # type: ignore
+        # Set current node
+        current_node = (0,0)
+        distance_matrix[current_node] = 0
         
-            if j == w: # only move down
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
-                path.append(move)
-                continue
+        visited_set = {current_node}
+        unvisited_set.remove(current_node)
+
+        keep_going = False
+
+        while keep_going:
+            i = current_node[0]
+            j = current_node[1]
+            neighborhood = list()
             
-            if i == h: # only move right
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
-                path.append(move)
-                continue
-            
-            # right cell
-            time_right = self.compute_time(i+1, j+1) + self.compute_time(i, j+1) + self.compute_time(i, j+2)
+            if (i+1,j) in unvisited_set: self.update_distance(distance_matrix,i+1, j, current_node); neighborhood.append((i+1,j))
+            if (i,j+1) in unvisited_set: self.update_distance(distance_matrix,i, j+1, current_node); neighborhood.append((i,j+1))
+            #if j != w and (i-1,j) in unvisited_set: update_distance(distance_matrix, M,w,h, i-1, j, current_node); neighborhood.append((i-1,j))
+            #if i != h and (i,j-1) in unvisited_set: update_distance(distance_matrix, M,w,h, i, j-1, current_node); neighborhood.append((i,j-1))
 
-            # down cell
-            time_down = self.compute_time(i+1, j) + self.compute_time(i+2, j)+ self.compute_time(i+1, j+1)
+            #print(distance_matrix)
 
-            if time_right < time_down:
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
-            else:
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
+            find_min = list()
+            for k in neighborhood:
+                find_min.append(distance_matrix[k])
 
-            path.append(move)
+            next_node = neighborhood[find_min.index(min(find_min))]    
+            print(next_node)
+
+            unvisited_set.remove(next_node)
+            visited_set.add(next_node)   # type: ignore 
+            current_node = next_node
+            keep_going = current_node == (self.h-1,self.w-1)
+
+        self.visited_set = visited_set    
 
 
 
-        self.agent.path = (" ".join(path))      
+    def update_distance(self, distance_matrix, i, j, current_node):
+        """
+        update_distance is used to updated the distance_matrix with new distance values, smaller than
+        the previous ones
 
-    def compute_time(self, i,j):
-        if (j > self.w - 1  or i > self.h -1 ):
-            return 0 
-        return self.grid[i,j]     
-
-
-
-
-
-
-
-
+        """
+        if (j > self.w   or i > self.h or i < 0 or j < 0 ):
+            return  
+        distance_matrix[i,j] = self.grid[i,j] + distance_matrix[current_node]   
+        return distance_matrix    
