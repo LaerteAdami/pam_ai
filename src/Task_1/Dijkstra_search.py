@@ -19,6 +19,7 @@ class DijkstraSearch():
 
         h = self.h - 1
         w = self.w - 1
+        self.agent.timer = self.grid[0,0]
 
        # Initiate variables
 
@@ -34,15 +35,15 @@ class DijkstraSearch():
 
         keep_going = False
 
-        while keep_going:
+        while not keep_going:
             i = current_node[0]
             j = current_node[1]
             neighborhood = list()
             
             if (i+1,j) in unvisited_set: self.update_distance(distance_matrix,i+1, j, current_node); neighborhood.append((i+1,j))
             if (i,j+1) in unvisited_set: self.update_distance(distance_matrix,i, j+1, current_node); neighborhood.append((i,j+1))
-            #if j != w and (i-1,j) in unvisited_set: update_distance(distance_matrix, M,w,h, i-1, j, current_node); neighborhood.append((i-1,j))
-            #if i != h and (i,j-1) in unvisited_set: update_distance(distance_matrix, M,w,h, i, j-1, current_node); neighborhood.append((i,j-1))
+            #if j != w and (i-1,j) in unvisited_set: self.update_distance(distance_matrix, i-1, j, current_node); neighborhood.append((i-1,j))
+            #if i != h and (i,j-1) in unvisited_set: self.update_distance(distance_matrix, i, j-1, current_node); neighborhood.append((i,j-1))
 
             #print(distance_matrix)
 
@@ -51,12 +52,13 @@ class DijkstraSearch():
                 find_min.append(distance_matrix[k])
 
             next_node = neighborhood[find_min.index(min(find_min))]    
-            print(next_node)
 
             unvisited_set.remove(next_node)
             visited_set.add(next_node)   # type: ignore 
             current_node = next_node
             keep_going = current_node == (self.h-1,self.w-1)
+
+            self.agent.timer += self.grid[next_node]
 
         self.visited_set = visited_set    
 
