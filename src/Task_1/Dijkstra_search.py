@@ -24,18 +24,19 @@ class DijkstraSearch():
        # Initiate variables
 
         unvisited_set = set([ (i,j) for i in range(h+1) for j in range(w+1)])
-
         distance_matrix = float("inf") * np.ones_like(self.grid)  # type: ignore
+        
         # Set current node
         current_node = (0,0)
         distance_matrix[current_node] = 0
         
+        # Update sets
         visited_set = {current_node}
         unvisited_set.remove(current_node)
 
-        keep_going = False
+        stop_condition = False
 
-        while not keep_going:
+        while not stop_condition:
             i = current_node[0]
             j = current_node[1]
             neighborhood = list()
@@ -56,7 +57,7 @@ class DijkstraSearch():
             unvisited_set.remove(next_node)
             visited_set.add(next_node)   # type: ignore 
             current_node = next_node
-            keep_going = current_node == (self.h-1,self.w-1)
+            stop_condition = current_node == (self.h-1,self.w-1)
 
             self.agent.timer += self.grid[next_node]
 
