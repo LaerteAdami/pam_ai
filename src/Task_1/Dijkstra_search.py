@@ -60,7 +60,7 @@ class DijkstraSearch():
             self.agent.timer += self.grid[next_node]
 
         self.visited_set = visited_set 
-        self.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
+        self.agent.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
 
     def update_distance(self, distance_matrix, i, j, current_node):
         """

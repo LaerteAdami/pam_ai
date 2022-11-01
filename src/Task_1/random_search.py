@@ -41,11 +41,12 @@ class RandomSearch():
             counter += 1 # update counter
 
             if counter == self.max_steps: # when the maximum number of steps has been reached, the method stops
+                self.agent.path_found = False
                 break
 
         self.visited_set = visited_set 
 
-        self.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
+        self.agent.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
             
     def random_step(self, current_node):
         """

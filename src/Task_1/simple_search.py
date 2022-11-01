@@ -65,9 +65,13 @@ class SimpleSearch():
              
         self.visited_set = visited_set  
 
-        self.execution_time = ( time.time() - start  ) * 1000 # compute execution time in ms
+        self.agent.execution_time = ( time.time() - start  ) * 1000 # compute execution time in ms
 
     def compute_time(self, i,j):
-        if (j > self.w - 1  or i > self.h -1 ):
+        """
+        This function is used to find the grid value of a specif cell, given the coordinates (i, j)
+        It also checks whether the cell is inside the grid. If not, it returns 0
+        """
+        if (j > self.w - 1  or i > self.h -1 ): # checks if the cell is outside of the grid
             return 0 
         return self.grid[i,j]     
