@@ -5,7 +5,6 @@ class SimpleSearch():
         self.grid = random_grid.grid
         self.w = random_grid.grid.shape[1]
         self.h = random_grid.grid.shape[0]
-        self.path = ""
 
     def compute_path(self):
         """
@@ -15,10 +14,13 @@ class SimpleSearch():
         The direction chosen is the one with the smallest sum
         In this way we can evaluate with a little more depth the best direction for each step
         """
+        import time
 
+        start = time.time() # variable used to store the initial time. 
+                            # It will be use to compute the total execution time of the search
+        
         h = self.h - 1
         w = self.w - 1
-        path = []
 
         self.agent.timer = self.grid[0,0] # initialise the timer of the agent
         i = self.agent.i # horizontal position of the agent at the start
@@ -28,44 +30,42 @@ class SimpleSearch():
 
         while not((i==h) and (j==w)):
         
-            if j == w: # only move down
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
-                path.append(move)
-                visited_set.add((i,j)) 
+            # Specials cases when the agent is at the borders of the grid
+            if j == w: # if the agent is at the right border, only move down
+                self.agent.timer += self.grid[i+1,j] # update timer
+                i+=1 # move down
+                visited_set.add((i,j)) # mark the node as visited
                 continue
             
-            if i == h: # only move right
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
-                path.append(move)
-                visited_set.add((i,j)) 
+            if i == h: # if the agent is at the lower border, only move right
+                self.agent.timer += self.grid[i,j+1] # update timer
+                j+=1 # move right
+                visited_set.add((i,j)) # mark the node as visited
                 continue
             
-            # right cell
+            # Compute the expected time for the right cell and its neighbours 
+            # The neighbours are the cells to the right and above with the respect to the right cell
             time_right = self.compute_time(i+1, j+1) + self.compute_time(i, j+1) + self.compute_time(i, j+2)
 
-            # down cell
+            # Compute the expected time for the down cell and its neighbours 
+            # The neighbours are the cells to the right and above with the respect to the down cell
             time_down = self.compute_time(i+1, j) + self.compute_time(i+2, j)+ self.compute_time(i+1, j+1)
 
+            # Choose whether is it more convenient to move to right or below
+            # I.e., move to the right when the right cell and its neighbours have a smaller
+            # time compared to the down cell and its neighbours
             if time_right < time_down:
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
+                self.agent.timer += self.grid[i,j+1] # update timer
+                j+=1 # move right
             else:
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
+                self.agent.timer += self.grid[i+1,j] # update timer
+                i+=1 # move down
 
-            path.append(move)
-            visited_set.add((i,j)) 
+            visited_set.add((i,j)) # mark the node as visited
+             
+        self.visited_set = visited_set  
 
-
-
-        self.agent.path = (" ".join(path)) 
-        self.visited_set = visited_set     
+        self.execution_time = ( time.time() - start  ) * 1000 # compute execution time in ms
 
     def compute_time(self, i,j):
         if (j > self.w - 1  or i > self.h -1 ):

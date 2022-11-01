@@ -1,83 +1,92 @@
 class RandomSearch():
 
-    rng = __import__('numpy.random.default_rng')
-    def __init__(self, agent, random_grid):
+    random = __import__('random')
+    def __init__(self, agent, random_grid, max_steps):
         self.agent = agent
         self.grid = random_grid.grid
         self.w = random_grid.grid.shape[1]
         self.h = random_grid.grid.shape[0]
-        self.path = ""
+        self.max_steps = max_steps
 
     def compute_path(self):
         """
-        This method should decide in which direction to move by evaluating the cell to the right 
-        and below the selected cell (excluding special cases at the edges)
-        For this cell, we evaluate the sum of the cell + the subsequent cells below and to the right
-        The direction chosen is the one with the smallest sum
-        In this way we can evaluate with a little more depth the best direction for each step
+        This method aims to reach the final grid cell through a random series of movements of the agent. 
+        At each step, a random direction is chosen to travel between the adjacent cells.
+        Since a random walk could take a very larger amount of steps, the computation is bounded 
+        with a maximum value of steps, i.e., max_steps
         """
-        from numpy.random import default_rng
+        import time
 
-        self.rng = default_rng()
-        
-        h = self.h - 1
-        w = self.w - 1
-        path = []
+        start = time.time() # variable used to store the initial time. 
+                            # It will be use to compute the total execution time of the search
 
         self.agent.timer = self.grid[0,0] # initialise the timer of the agent
         i = self.agent.i # horizontal position of the agent at the start
         j = self.agent.j # vertical position of the agent at the start
-
-        visited_set = {(0,0)}
-
-        while not((i==h) and (j==w)):
         
-            if j == w: # only move down
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
-                path.append(move)
-                visited_set.add((i,j)) 
-                continue
-            
-            if i == h: # only move right
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
-                path.append(move)
-                visited_set.add((i,j)) 
-                continue
-            
-            # right cell
-            time_right = self.compute_time(i+1, j+1) + self.compute_time(i, j+1) + self.compute_time(i, j+2)
+        current_node = (0,0) # initialise the starting position of the agent
+        visited_set = {current_node}
+        counter = 0 # counter to evaluate the number of steps of the path
 
-            # down cell
-            time_down = self.compute_time(i+1, j) + self.compute_time(i+2, j)+ self.compute_time(i+1, j+1)
+        while not((current_node[0]==(self.h - 1)) and (current_node[1]==(self.w - 1))):
+        
+            next_node = self.random_step(current_node) # select a random step from the current node
 
-            if time_right < time_down:
-                move = "R"
-                self.agent.timer += self.grid[i,j+1]
-                j+=1
+            self.agent.timer += self.grid[next_node] # update timer
+
+            current_node = next_node # set the next node as the current node
+
+            visited_set.add(current_node)  # type: ignore
+
+            counter += 1 # update counter
+
+            if counter == self.max_steps: # when the maximum number of steps has been reached, the method stops
+                break
+
+        self.visited_set = visited_set 
+
+        self.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
+            
+    def random_step(self, current_node):
+        """
+        This function is employed to determine randomly the next step the agent will take 
+        Input: current_node
+        Output: next_node 
+
+        """
+
+        import random
+
+        random_direction = random.randrange(4) 
+        # select one random direction, encoded as follows:
+        # random_direction = 0 --> move down
+        # random_direction = 1 --> move right
+        # random_direction = 2 --> move up
+        # random_direction = 3 --> move left
+                
+        i = current_node[0]
+        j = current_node[1] 
+        next_node = current_node
+
+        if random_direction == 0: # step down
+            if i == self.h - 1: # when the agent is the the lower border, skip the next step
+                pass 
+            else: 
+                next_node = (i+1,j)
+        elif random_direction == 1: # step right 
+            if j == self.w - 1: # when the agent is the the right border, skip the next step
+                pass
             else:
-                move = "D"
-                self.agent.timer += self.grid[i+1,j]
-                i+=1
-
-            path.append(move)
-            visited_set.add((i,j)) 
-
-
-
-        self.agent.path = (" ".join(path)) 
-        self.visited_set = visited_set     
-
-    def compute_time(self, i,j):
-        if (j > self.w - 1  or i > self.h -1 ):
-            return 0 
-        return self.grid[i,j] 
-
-    def random_step(self):
-        #self.rng
-        pass    
-
-
+                next_node = (i,j+1)   
+        elif random_direction == 2: # step up 
+            if i == 0: # when the agent is the the upper border, skip the next step
+                pass
+            else:
+                next_node = (i-1,j) 
+        else: # step left 
+            if j == 0: # when the agent is the the left border, skip the next step
+                pass
+            else:
+                next_node = (i,j-1)   
+          
+        return next_node
