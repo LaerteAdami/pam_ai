@@ -47,7 +47,7 @@ class GameGrid():
         ax.yaxis.set_major_locator(ticker.NullLocator())
         ax.grid()
         
-         if not (not save_path): # if save_path is not empty
+        if not (not save_path): # if save_path is not empty
             plt.savefig(save_path)
 
 
@@ -56,6 +56,7 @@ class GameGrid():
            
     def print_path(self, visited_cells, save_path = ""):
 
+        import matplotlib.pyplot as plt
         fig, ax = self.print_grid()
 
         for i in range(self.grid.shape[0]-1,-1,-1):
@@ -67,6 +68,6 @@ class GameGrid():
                     fc=(1., 0.8, 0.8),
                     ))
                     
-         if not (not save_path): # if save_path is not empty
+        if not (not save_path): # if save_path is not empty
             plt.savefig(save_path)
             
