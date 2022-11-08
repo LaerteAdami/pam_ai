@@ -21,7 +21,7 @@ class GameGrid():
                 random_grid[i][j] = random.randrange(9)
         self.grid = random_grid
 
-    def print_grid(self):
+    def print_grid(self, save_path = ""):
 
         import matplotlib.pyplot as plt
         import matplotlib.ticker as ticker
@@ -46,11 +46,15 @@ class GameGrid():
         ax.xaxis.set_major_locator(ticker.NullLocator())
         ax.yaxis.set_major_locator(ticker.NullLocator())
         ax.grid()
+        
+         if not (not save_path): # if save_path is not empty
+            plt.savefig(save_path)
+
 
         return fig, ax
          
            
-    def print_path(self, visited_cells):
+    def print_path(self, visited_cells, save_path = ""):
 
         fig, ax = self.print_grid()
 
@@ -62,3 +66,7 @@ class GameGrid():
                     ec=(1., 0.5, 0.5),
                     fc=(1., 0.8, 0.8),
                     ))
+                    
+         if not (not save_path): # if save_path is not empty
+            plt.savefig(save_path)
+            
