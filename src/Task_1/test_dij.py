@@ -67,7 +67,7 @@ print(distance_matrix)
 
 #print(visited_list)
     
-print(target[0] - 1  )  
+ 
     
 current_node = (5,3)   
     

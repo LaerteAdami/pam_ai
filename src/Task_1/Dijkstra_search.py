@@ -5,9 +5,9 @@ class DijkstraSearch():
         self.grid = random_grid.grid
         self.w = random_grid.grid.shape[1] - 1
         self.h = random_grid.grid.shape[0] - 1
-        self.count_steps = 0
+        #self.count_steps = 0
 
-    def compute_path(self):
+    def compute_path(self, get_path = False):
         """
         This method should decide in which direction to move by evaluating the cell to the right 
         and below the selected cell (excluding special cases at the edges)
@@ -33,7 +33,7 @@ class DijkstraSearch():
         unvisited_list.remove(current_node) # remove (0,0) from the unvisited nodes
 
         self.agent.timer += self.grid[current_node]
-        counter = 0
+        #counter = 0
 
         while target not in visited_set: # loop until the target is visited
         
@@ -49,18 +49,15 @@ class DijkstraSearch():
 
             visited_set.add(next_node)  # type: ignore # mark next node as visited
             unvisited_list.remove(next_node) # remove next node to the unvisited list
-            #visited_list.append(((current_node),(next_node)))   # type: ignore
             current_node = next_node # set the next node as the current
-
-            counter +=1
-            #if counter == 1000:
-            #    break
             
         self.agent.timer += int(distance_matrix[target])    
 
-        self.visited_set = visited_set 
+        if get_path:
+            self.visited_set = self.get_path(unvisited_list, distance_matrix) 
+
         self.agent.execution_time = (time.time() - start ) * 1000 # compute execution time in ms
-        self.count_steps = counter
+        #self.count_steps = counter
 
     def get_neighbours(self, current_node, visited_set):
         """
@@ -82,3 +79,30 @@ class DijkstraSearch():
         if j - 1 in range(self.w+1) and (i,j-1) not in visited_set:
             neighbours.append((i,j-1))    
         return neighbours    
+
+
+    def get_path(self, unvisited_list, distance_matrix):
+
+        import numpy as np
+
+        current_node = (self.h, self.w) # start from the last node
+
+        unvisited_set = set(unvisited_list)
+        visited_set = set()
+        visited_set.add(current_node)  # type: ignore
+
+        while current_node != (0,0):
+
+            neighbours = self.get_neighbours(current_node,unvisited_set)
+            unvisited_set.add(current_node)  # type: ignore
+
+            if len(neighbours) == 1:
+                current_node = neighbours[0]
+            else:
+                neighbours_distance = np.zeros(len(neighbours))
+                neighbours_distance = [distance_matrix[neighbours[i]] for i in range(len(neighbours))]
+                current_node = neighbours[neighbours_distance.index(np.min(neighbours_distance))]
+
+            visited_set.add(current_node)  # type: ignore
+
+        return visited_set
