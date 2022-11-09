@@ -13,13 +13,14 @@ class GameGrid():
     def generate_grid(self):
 
         import numpy as np
-        import random
+        #import random
 
-        random_grid = np.zeros((self.h,self.w),dtype=int)
-        for i in range(self.h):
-            for j in range(self.w):
-                random_grid[i][j] = random.randrange(9)
-        self.grid = random_grid
+        self.grid = np.random.randint(0, 10, size=(self.h,self.w), dtype=int)
+        #random_grid = np.zeros((self.h,self.w),dtype=int)
+        #for i in range(self.h):
+        #    for j in range(self.w):
+        #        random_grid[i][j] = random.randrange(9)
+        #self.grid = random_grid
 
     def print_grid(self, save_path = ""):
 
