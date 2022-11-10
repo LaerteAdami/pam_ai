@@ -8,7 +8,7 @@ The task consists in a game where an agent must find the shortest path in a rect
 
 ![grid](https://user-images.githubusercontent.com/115791653/200920148-886cb592-bb57-4abe-a2ae-579ef22cbeca.png)
 
-The problem is solved with the Jupyter notebook **notebook1** found in the folder */notebook*.
+The problem is solved with the Jupyter notebook **notebook_Task1** found in the folder */notebook*.
 
 Usa Google Colab, installando il programma (ti serve setup.py)
 !pip instal git+https://.. indirizzo della cartella
