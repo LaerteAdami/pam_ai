@@ -1,4 +1,5 @@
 results/
+data/fashon_MNIST
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
