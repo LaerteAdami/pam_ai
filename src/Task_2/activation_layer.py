@@ -13,18 +13,18 @@ class ActivationLayer():
         
         if self.type == "sigmoid":
             
-            #return 1 / (1 + np.exp(-x))
-            return np.exp(np.fmin(x, 0)) / (1 + np.exp(-np.abs(x)))  # type: ignore 
+            return np.exp(np.fmin(x, 0)) / (1 + np.exp(-np.abs(x)))  
        
         elif self.type == "ReLu":
                 
-            return np.maximum(0,x)  # type: ignore 
+            return np.maximum(0,x)
         
         elif self.type == "softmax":
+
             x = x.astype('float128')
-            exp_vector = np.exp(x)  # type: ignore 
+            exp_vector = np.exp(x)
     
-            return exp_vector / np.sum(exp_vector)  # type: ignore 
+            return exp_vector / np.sum(exp_vector)
     
     def d_activation_function(self,x):
         """
@@ -34,8 +34,7 @@ class ActivationLayer():
         
         if self.type == "sigmoid":
             
-            #sig = 1 / (1 + np.exp(-x))
-            sig = np.exp(np.fmin(x, 0)) / (1 + np.exp(-np.abs(x)))  # type: ignore 
+            sig = np.exp(np.fmin(x, 0)) / (1 + np.exp(-np.abs(x))) 
             
             return sig*(1-sig)
         

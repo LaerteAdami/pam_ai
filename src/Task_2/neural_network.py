@@ -1,10 +1,15 @@
 import numpy as np
 from scipy.stats import truncnorm
 
+# Function to initialise the weigths and the biases
 def truncated_normal(mean=0, sd=1, low=0, upp=5):
     return truncnorm((low - mean) / sd, (upp - mean) / sd, loc=mean, scale=sd)
 
 class NeuralNetwork():
+    """
+    Fully connected neural network
+
+    """
 
     def __init__(self, learning_rate,max_epochs,type_loss=["mse","cross_entropy"], optimizer = None):
         self.lr = learning_rate
@@ -87,7 +92,7 @@ class NeuralNetwork():
         
         for epoch in range(self.max_epochs):
             
-            
+            # Apply dropout
             active_indices = self.dropout_matrices()
             input_indices = active_indices[-1]
             
@@ -114,8 +119,9 @@ class NeuralNetwork():
                 layer = self.layers[i]
             
                 # update weights and compute error to pass at the previous layer
-                io_error = layer.backward_pass(io_error,self.lr) #, opt = self.opt)
+                io_error = layer.backward_pass(io_error,self.lr)
                 
+            # Restore matrices of the dropout    
             self.restore_matrices()
             
             # Stopping criterion
@@ -127,6 +133,10 @@ class NeuralNetwork():
         return L_history        
         
     def predict(self, X):
+        """
+        Predict values after training of the model
+        
+        """
         
         io_layer = X
         
@@ -154,6 +164,7 @@ class NeuralNetwork():
             # set layer 
             layer = self.layers[i]
             
+            # Call dropout for each layer
             indices = layer.dropout(indices)
             indices_active_nodes.append(indices)
             
@@ -172,7 +183,8 @@ class NeuralNetwork():
         for i in range(len(self.layers) - 1,0, - 1): # from last layer to the first layer
 
             # set layer 
-            layer = self.layers[i]   
+            layer = self.layers[i]  
+            # Reset each layer 
             indices = layer.reset_matrix(indices)
 
     def fit_mini_batch(self, X, y, toll, n_mini_batches = 32):
