@@ -1,7 +1,7 @@
 from sklearn.metrics import accuracy_score
 import torch
 
-class NeuralNetwork():
+class NeuralNetworkV2():
     
     def __init__(self, nn):
         self.nn = nn
@@ -51,6 +51,7 @@ class NeuralNetwork():
                 output = self.nn(data)
     
                 # Compute loss 
+                
                 L = self.loss_function(output, target)
     
                 # Backward pass

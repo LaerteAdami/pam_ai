@@ -1,3 +1,5 @@
+import torch.nn as nn
+
 class CNN_v1(nn.Module):
     
     def __init__(self, num_classes=10):
