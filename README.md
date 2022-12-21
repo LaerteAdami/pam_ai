@@ -1,6 +1,6 @@
 # pam_ai - Mathematics and Programming for AI - Coursework
 
-**Authors**: Laerte Adami - Lavanya Singh
+**Author**: Laerte Adami
 
 ## Task 1
 The task consists in a game where an agent must find the shortest path in a rectangular grid (with dimensions height $h$ and width $w$) where each cell has a random value between 0 and 9. The agent starts at the upper-left corner of the grid and reaches the end at the lower-right corner of the grid.
