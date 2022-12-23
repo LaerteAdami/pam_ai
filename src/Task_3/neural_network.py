@@ -1,5 +1,6 @@
 from sklearn.metrics import accuracy_score
 import torch
+import matplotlib.pyplot as plt
 
 class NeuralNetwork():
     
@@ -120,9 +121,10 @@ class NeuralNetwork():
             y_test = torch.cat((y_test, target), dim=0)
 
       
-        print("Accuracy: %.2f"%accuracy_score(y_pred, y_test))
-        # Plot loss when requested
+        # Print accuracy and plot loss when requested
         if plot_flag:
+            
+            print("Accuracy: %.2f"%accuracy_score(y_pred, y_test))
 
             fig, ax = plt.subplots()
             ax.plot(self.L_history,label="train")
@@ -131,4 +133,15 @@ class NeuralNetwork():
             ax.set_ylabel("Loss")
             ax.legend();
             
-        return y_pred, y_test    
+        return y_pred, y_test  
+    
+    def reset_model(self):
+        """
+        Reset the model. Source: https://discuss.pytorch.org/t/how-to-re-set-alll-parameters-in-a-network/20819
+    
+        """
+        for layers in self.nn.children():
+            for layer in layers:
+                if hasattr(layer, 'reset_parameters'):
+                    layer.reset_parameters()
+        
