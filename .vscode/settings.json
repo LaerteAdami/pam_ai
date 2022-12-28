@@ -1,7 +1,0 @@
-{
-    "python.analysis.extraPaths": [
-        "./src/lab",
-        "./src"
-    ],
-    "python.analysis.typeCheckingMode": "basic"
-}
