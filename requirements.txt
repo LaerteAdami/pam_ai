@@ -1,1 +1,6 @@
-Requirements for the project
+numpy
+matplotlib
+sklearn
+random
+time
+torch
