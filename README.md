@@ -1,4 +1,4 @@
-# pam_ai - Mathematics and Programming for AI - Coursework
+# pam_ai - Programming and Mathematics for AI - Coursework
 
 **Author**: Laerte Adami
 
